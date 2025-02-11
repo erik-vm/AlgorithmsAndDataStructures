@@ -10,6 +10,8 @@ package sub1;
 //Do not use Java List types (lists are very slow for this task).
 
 
+import java.util.Arrays;
+
 public class Sheep {
 
     enum Animal {sheep, goat}
@@ -17,11 +19,34 @@ public class Sheep {
     ;
 
     public static void main(String[] param) {
-        // for debugging
+        Animal[] animals = {Animal.sheep, Animal.goat, Animal.sheep, Animal.goat, Animal.sheep};
+        reorder(animals);
+        System.out.println(Arrays.toString(animals));
     }
 
     public static void reorder(Animal[] animals) {
-        // TODO!!! Your program here
+        int start = 0;
+        int end = animals.length - 1;
+
+        while (start < end) {
+
+            // increment start if pointer is already on goat
+            while (start < end && animals[start] == Animal.goat) {
+                start++;
+            }
+            // decrement end if pointer is already on sheep
+            while (start < end && animals[end] == Animal.sheep) {
+                end--;
+            }
+            // swap goat and sheep, if sheep on left
+            if (start < end) {
+                Animal temp = animals[start];
+                animals[start] = animals[end];
+                animals[end] = temp;
+            }
+
+
+        }
     }
 }
 
