@@ -1,0 +1,8 @@
+Go to https://enos.itcollege.ee/~japoia/algorithms/aa_lab1.html to read the task.
+Do not change any of the given method signatures or class name. 
+Pay attention also to small tasks in the main method that are not tested automatically.
+
+Esitage ülesande https://enos.itcollege.ee/~japoia/algorithms/aa_lab1.html
+programm klassina Answer, jälgige täpselt etteantud signatuure.
+Tehke ära ka väikesed ülesanded main meetodis, mida automaattestid ei kontrolli.
+
