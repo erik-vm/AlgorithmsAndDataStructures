@@ -225,4 +225,53 @@ public class Node {
             sb.append(")");
         }
     }
+
+
+    //XML code
+    public String toXML() {
+        try {
+            StringBuilder sb = new StringBuilder();
+            buildXML(sb, 1);
+            return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generating XML from tree: " + e.getMessage(), e);
+        }
+    }
+
+    private void buildXML(StringBuilder sb, int depth) {
+        if (this.name == null) {
+            throw new RuntimeException("Node name cannot be null.");
+        }
+
+        indent(sb, depth - 1);
+
+        if (firstChild == null) {
+            sb.append("<L").append(depth).append("> ").append(name).append(" </L").append(depth).append(">\n");
+        } else {
+            sb.append("<L").append(depth).append("> ").append(name).append("\n");
+
+            firstChild.buildXML(sb, depth + 1);
+            Node sibling = firstChild.nextSibling;
+            while (sibling != null) {
+                sibling.buildXML(sb, depth + 1);
+                sibling = sibling.nextSibling;
+            }
+
+            indent(sb, depth - 1);
+            sb.append("</L").append(depth).append(">\n");
+        }
+    }
+
+
+    private void indent(StringBuilder sb, int level) {
+        for (int i = 0; i < level; i++) {
+            sb.append("    "); // 4 tühikut
+        }
+    }
+
+    public static void main(String[] args) {
+        Node n = parsePostfix("((C)B,(E,F)D,G)A");
+        String xml = n.toXML();
+        System.out.println(xml);
+    }
 }

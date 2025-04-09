@@ -144,5 +144,79 @@ public class NodeTest {
       Node root = Node.parsePostfix ("((A)B,(C)D)");
    }
 
+
+   //XML tests
+   private String normalize(String s) {
+      return s.replaceAll("\\s+", "");
+   }
+
+   @Test
+   public void testSingleNode() {
+      Node n = Node.parsePostfix("A");
+      String expected = "<L1> A </L1>\n";
+      assertEquals(normalize(expected), normalize(n.toXML()));
+   }
+
+   @Test
+   public void testOneChild() {
+      Node n = Node.parsePostfix("(B)A");
+      String expected =
+              "<L1> A\n" +
+                      "    <L2> B </L2>\n" +
+                      "</L1>\n";
+      assertEquals(normalize(expected), normalize(n.toXML()));
+   }
+
+   @Test
+   public void testSiblingsOnly() {
+      Node n = Node.parsePostfix("(B,C,D)A");
+      String expected =
+              "<L1> A\n" +
+                      "    <L2> B </L2>\n" +
+                      "    <L2> C </L2>\n" +
+                      "    <L2> D </L2>\n" +
+                      "</L1>\n";
+      assertEquals(normalize(expected), normalize(n.toXML()));
+   }
+
+   @Test
+   public void testDeeperTree() {
+      Node n = Node.parsePostfix("((C)B,(E,F)D,G)A");
+      String expected =
+              "<L1> A\n" +
+                      "    <L2> B\n" +
+                      "        <L3> C </L3>\n" +
+                      "    </L2>\n" +
+                      "    <L2> D\n" +
+                      "        <L3> E </L3>\n" +
+                      "        <L3> F </L3>\n" +
+                      "    </L2>\n" +
+                      "    <L2> G </L2>\n" +
+                      "</L1>\n";
+      assertEquals(normalize(expected), normalize(n.toXML()));
+   }
+
+   @Test
+   public void testComplexTree() {
+      Node n = Node.parsePostfix("(((H)G)F,(J)I)E");
+      String expected =
+              "<L1> E\n" +
+                      "    <L2> F\n" +
+                      "        <L3> G\n" +
+                      "            <L4> H </L4>\n" +
+                      "        </L3>\n" +
+                      "    </L2>\n" +
+                      "    <L2> I\n" +
+                      "        <L3> J </L3>\n" +
+                      "    </L2>\n" +
+                      "</L1>\n";
+      assertEquals(normalize(expected), normalize(n.toXML()));
+   }
+
+   @Test(expected = RuntimeException.class)
+   public void testNullNameNodeThrows() {
+      Node bad = new Node(null, null, null);
+      bad.toXML(); // Should throw due to null name
+   }
 }
 
